@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "version": "stage4-native-v1",
+  "base_seed": 20261102,
+  "reference_size": 224,
+  "application_resolution": "native",
+  "input_dtype": "uint8",
+  "working_dtype": "float64",
+  "quantization": "clip_0_1_then_numpy_rint_times_255_uint8",
+  "rng": "numpy.Generator(numpy.PCG64(seed64))",
+  "seed_derivation": "SHA256(UTF8(base_seed|category|image_id|corruption|severity))[:8], little-endian unsigned",
+  "gaussian_boundary": "reflect",
+  "gaussian_truncate": 4.0,
+  "motion_padding": "numpy.pad reflect (whole-sample symmetric)",
+  "motion_angle_degrees": [-45.0, 45.0],
+  "jpeg": {"rgb_subsampling": 2, "grayscale_subsampling": 0, "optimize": false, "progressive": false},
+  "operators": {
+    "gaussian_noise": {"parameter": "standard_deviation_on_0_1", "levels": [0.08, 0.12, 0.18, 0.26, 0.38]},
+    "gaussian_blur": {"parameter": "sigma_at_224_equivalent_pixels", "levels": [1.0, 2.0, 3.0, 4.0, 6.0]},
+    "motion_blur": {"parameter": "half_length_and_sigma_at_224_equivalent_pixels", "levels": [[10, 3], [15, 5], [15, 8], [15, 12], [20, 15]]},
+    "brightness": {"parameter": "additive_HSV_value", "levels": [0.1, 0.2, 0.3, 0.4, 0.5]},
+    "contrast": {"parameter": "factor_about_per_channel_spatial_mean", "levels": [0.4, 0.3, 0.2, 0.1, 0.05]},
+    "jpeg": {"parameter": "Pillow_quality", "levels": [25, 18, 15, 10, 7]}
+  },
+  "sources": {
+    "archived_protocol_member": "fdsp_corruption_gpu_package/docs/CORRUPTION_PROTOCOL.md",
+    "archived_protocol_sha256": "1c38e30873f2b64f9d994d0f162bee7f23085733addd927d87dbdafa4e11a6d6",
+    "archived_implementation_sha256": "bf8c5bb26b208708f4b3c5b89f345873dee0e090b8dff04d7033ea04b885d602",
+    "benchmark_source": "https://github.com/hendrycks/robustness/blob/master/ImageNet-C/imagenet_c/imagenet_c/corruptions.py"
+  }
+}
